@@ -1,5 +1,5 @@
 const myLibrary = [];
-const bookDisplay = document.getElementById('bookDisplay');
+const libraryDisplay = document.getElementById('libraryDisplay');
 
 function Book(title, author, pages, read) {
     if (!new.target) {
@@ -24,10 +24,17 @@ function addBooktoLibrary(title, author, pages, read) {
 
 function displayLibraryBooks() {
     for (const book of myLibrary) {
-        //create the html to display the book
-        let bookRow = `<tr><th scope="row">${book.title}</th><td>${book.author}</td><td>${book.pages}</td><td>${book.read ? "Finished" : "Not Finished"}</td></tr>`
-        bookDisplay.innerHTML += bookRow;
+       //create card
+       let bookCard = 
+       `<div class="bookCard">
+            <h2 class="title">${book.title}</h2>
+            <p>by ${book.author}</p>
+            <p><span class=bold>Pages:</span> ${book.pages} <span class="bold">Reading Status:</span> ${book.read ? "Finished" : "Not Finished"}</p>
+       </div>`;
+
+       libraryDisplay.innerHTML += bookCard;
     }
+
 };
 
 // Testing
