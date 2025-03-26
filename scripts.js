@@ -1,5 +1,11 @@
-const myLibrary = [];
+// Document Variables
 const libraryDisplay = document.getElementById('libraryDisplay');
+const addBookButton = document.getElementById('addBook');
+const dialog = document.getElementById('dialog');
+const exitButton = document.getElementById('exit');
+
+//Library Variables and Functions
+const myLibrary = [];
 
 function Book(title, author, pages, read) {
     if (!new.target) {
@@ -21,7 +27,6 @@ function addBooktoLibrary(title, author, pages, read) {
     myLibrary.push(book);
 };
 
-
 function displayLibraryBooks() {
     for (const book of myLibrary) {
        //create card
@@ -37,7 +42,16 @@ function displayLibraryBooks() {
 
 };
 
-// Testing
+// Dialog Controls
+
+libraryDisplay.addEventListener("click", (e) => {
+    if(!(e.target.closest("#addBook"))) return;
+    dialog.showModal();
+});
+
+exitButton.addEventListener("click", () => dialog.close());
+
+// Testing Data
 
 addBooktoLibrary("Let This Radicalize You", "Kelly Hayes, Mariame Kaba", 220, false);
 addBooktoLibrary("We Do This 'Til We Free Us", "Mariame Kaba", 160, true);
@@ -46,3 +60,4 @@ addBooktoLibrary("Idlewild", "James Frankie Thomas", 372, true);
 addBooktoLibrary("What My Bones Know", "Stephanie Foo", 182, true);
 
 displayLibraryBooks();
+
