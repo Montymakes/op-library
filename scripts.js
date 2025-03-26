@@ -8,6 +8,7 @@ const titleInput = document.getElementById('title');
 const authorInput = document.getElementById('author');
 const pageCountInput = document.getElementById('pageCount');
 const finishedInput = document.getElementById('finished-1');
+const form = document.querySelector('form');
 
 
 //Library Variables and Functions
@@ -34,8 +35,9 @@ function addBooktoLibrary(title, author, pages, read) {
 };
 
 function displayLibraryBooks() {
+    libraryDisplay.innerHTML = ''; //clear display
+
     for (const book of myLibrary) {
-       //create card
        let bookCard = 
        `<div class="bookCard">
             <h2 class="title">${book.title}</h2>
@@ -45,6 +47,8 @@ function displayLibraryBooks() {
 
        libraryDisplay.innerHTML += bookCard;
     }
+
+    libraryDisplay.appendChild(addBookButton); //re-add button
 
 };
 
@@ -64,9 +68,25 @@ libraryDisplay.addEventListener("click", (e) => {
 exitButton.addEventListener("click", () => {
     clearInputs();
     dialog.close();
-}
-    );
+});
 
+function submitNewBook(e) {
+    e.preventDefault();
+
+    const title = titleInput.value;
+    const author = authorInput.value;
+    const pages = pageCountInput.value;
+    const read = finishedInput.checked;
+
+    addBooktoLibrary(title, author, pages, read);
+    displayLibraryBooks();
+
+    clearInputs();
+    dialog.close();
+
+};
+
+submitButton.addEventListener('click', submitNewBook);
 
 
 // Testing Data
