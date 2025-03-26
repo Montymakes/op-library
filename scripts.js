@@ -2,7 +2,13 @@
 const libraryDisplay = document.getElementById('libraryDisplay');
 const addBookButton = document.getElementById('addBook');
 const dialog = document.getElementById('dialog');
-const exitButton = document.getElementById('exit');
+const exitButton = document.getElementById('exit')
+const submitButton = document.getElementById('submit');
+const titleInput = document.getElementById('title');
+const authorInput = document.getElementById('author');
+const pageCountInput = document.getElementById('pageCount');
+const finishedInput = document.getElementById('finished-1');
+
 
 //Library Variables and Functions
 const myLibrary = [];
@@ -43,13 +49,25 @@ function displayLibraryBooks() {
 };
 
 // Dialog Controls
+function clearInputs()  {
+    titleInput.value = '';
+    authorInput.value = '';
+    pageCountInput.value = '';
+};
+
 
 libraryDisplay.addEventListener("click", (e) => {
     if(!(e.target.closest("#addBook"))) return;
     dialog.showModal();
 });
 
-exitButton.addEventListener("click", () => dialog.close());
+exitButton.addEventListener("click", () => {
+    clearInputs();
+    dialog.close();
+}
+    );
+
+
 
 // Testing Data
 
