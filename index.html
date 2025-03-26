@@ -23,15 +23,15 @@
         <form>
             <p>
                 <label for="title">Title:</label>
-                <input type="text" name="title" id="title" required autofocus>
+                <input type="text" name="title" id="title" minlength="1" required autofocus>
             </p>
             <p>
                 <label for="author">Author(s):</label>
-                <input type="text" name="author" id="author" required>
+                <input type="text" name="author" id="author" minlength="1" required>
             </p>
             <p>
                 <label for="pageCount">Page Count:</label>
-                <input type="number" name="pageCount" id="pageCount" min="1" required>
+                <input type="number" name="pageCount" id="pageCount" min="1" max="1000000">
             </p>
             <fieldset>
                 <legend>Finished reading?:</legend>
