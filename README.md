@@ -6,7 +6,7 @@ Library project from Odin Project JavaScript Path
 [x] Create function Book object and library array.
 [x] Create function to add books to library.
 [x] Display library on page.
-[] Add button + form to add library books.
+[x] Add button + form to add library books.
 [] Add button to remove books from library.
 [] Add button to change reading status on a book.
 
