@@ -69,8 +69,14 @@ exitButton.addEventListener("click", () => {
     dialog.close();
 });
 
+function isValidBook(title, author, pages, read) {
+    
+};
+
 function submitNewBook(e) {
     e.preventDefault();
+
+    
 
     const title = titleInput.value;
     const author = authorInput.value;
