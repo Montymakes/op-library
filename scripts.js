@@ -33,30 +33,21 @@ function addBooktoLibrary(book) {
     myLibrary.push(book);
 };
 
-function removeBookfromLibrary(bookID) {
-    const newLibrary = myLibrary.filter((book) => book.id != bookID);
-    myLibrary = newLibrary;
-}
-
-function deleteBook(bookID) {
-    removeBookfromLibrary(bookID);
-    displayLibraryBooks();
-}
-
+//Library Display Functions
 function displayLibraryBooks() {
     libraryDisplay.innerHTML = ''; //clear display
 
     for (const book of myLibrary) {
        let bookCard = 
-       `<div class="bookCard">
+       `<div class="bookCard" id="${book.id}">
             <div class="book-details">
                 <h2 class="title">${book.title}</h2>
                 <p>by ${book.author}</p>
                 <p><span class=bold>Pages:</span> ${book.pages}</p>
             </div>
             <div class="book-controls">
-                <button type="button" class="${book.read ? "read" : "unread"} readingStatusButton">${book.read ? "READ" : "UNREAD"}</button>
-                <input type="image" src="img/delete.svg" class="delete" alt="Remove this book from your library." id="${book.id}" />
+                <button type="button" class="${book.read ? "read" : ""} readingStatusButton">${book.read ? "READ" : "UNREAD"}</button>
+                <input type="image" src="img/delete.svg" class="delete" alt="Remove this book from your library." />
             </div>
        </div>`;
 
@@ -67,6 +58,33 @@ function displayLibraryBooks() {
 
 };
 
+function removeBookfromLibrary(bookID) {
+    const newLibrary = myLibrary.filter((book) => book.id != bookID);
+    myLibrary = newLibrary;
+};
+
+function deleteBook(bookID) {
+    removeBookfromLibrary(bookID);
+    displayLibraryBooks();
+};
+
+function toggleReadingStatus(bookID) {
+    const book = myLibrary.find((book) => book.id === bookID);
+    book.read = book.read ? false : true;
+    displayLibraryBooks();
+};
+
+libraryDisplay.addEventListener("click", (e) => {
+    if(!(e.target.closest(".delete"))) return;
+    deleteBook(e.target.parentElement.parentElement.id);
+});
+
+libraryDisplay.addEventListener("click", (e) => {
+    if(!(e.target.closest(".readingStatusButton"))) return;
+    e.target.classList.toggle('read');
+    toggleReadingStatus(e.target.parentElement.parentElement.id);
+});
+
 // Dialog Controls
 function clearInputs()  {
     titleInput.value = '';
@@ -74,15 +92,9 @@ function clearInputs()  {
     pageCountInput.value = '';
 };
 
-
 libraryDisplay.addEventListener("click", (e) => {
     if(!(e.target.closest("#addBook"))) return;
     dialog.showModal();
-});
-
-libraryDisplay.addEventListener("click", (e) => {
-    if(!(e.target.closest(".delete"))) return;
-    deleteBook(e.target.id);
 });
 
 exitButton.addEventListener("click", () => {

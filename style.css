@@ -78,14 +78,12 @@ main {
     font-weight: bold;
     color: white;
     border-radius: 10px;
+    background-color: grey;
+
 }
 
 .read {
     background-color: var(--accent-color);
-}
-
-.unread {
-    background-color: grey;
 }
 
 .delete {
