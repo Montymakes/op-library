@@ -29,8 +29,7 @@ function Book(title, author, pages, read) {
     };
 };
 
-function addBooktoLibrary(title, author, pages, read) {
-    const book = new Book(title, author, pages, read);
+function addBooktoLibrary(book) {
     myLibrary.push(book);
 };
 
@@ -78,7 +77,7 @@ function submitNewBook(e) {
     const pages = pageCountInput.value;
     const read = finishedInput.checked;
 
-    addBooktoLibrary(title, author, pages, read);
+    addBooktoLibrary(new Book(title, author, pages, read));
     displayLibraryBooks();
 
     clearInputs();
@@ -91,11 +90,18 @@ submitButton.addEventListener('click', submitNewBook);
 
 // Testing Data
 
-addBooktoLibrary("Let This Radicalize You", "Kelly Hayes, Mariame Kaba", 220, false);
-addBooktoLibrary("We Do This 'Til We Free Us", "Mariame Kaba", 160, true);
-addBooktoLibrary("Health Communism", "Beatrice Adler-Bolton, Artie Vierkant", 339, false);
-addBooktoLibrary("Idlewild", "James Frankie Thomas", 372, true);
-addBooktoLibrary("What My Bones Know", "Stephanie Foo", 182, true);
+const book1 = new Book("Let This Radicalize You", "Kelly Hayes, Mariame Kaba", 220, false);
+const book2 = new Book("We Do This 'Til We Free Us", "Mariame Kaba", 160, true);
+const book3 = new Book("Health Communism", "Beatrice Adler-Bolton, Artie Vierkant", 339, false);
+const book4 = new Book("Idlewild", "James Frankie Thomas", 372, true);
+const book5 = new Book("What My Bones Know", "Stephanie Foo", 182, true);
+
+addBooktoLibrary(book1);
+addBooktoLibrary(book2);
+addBooktoLibrary(book3);
+addBooktoLibrary(book4);
+addBooktoLibrary(book5);
+
 
 displayLibraryBooks();
 
