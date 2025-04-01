@@ -121,21 +121,5 @@ function submitNewBook(e) {
 
 submitButton.addEventListener('click', submitNewBook);
 
-
-// Testing Data
-
-const book1 = new Book("Let This Radicalize You", "Kelly Hayes, Mariame Kaba", 220, false);
-const book2 = new Book("We Do This 'Til We Free Us", "Mariame Kaba", 160, true);
-const book3 = new Book("Health Communism", "Beatrice Adler-Bolton, Artie Vierkant", 339, false);
-const book4 = new Book("Idlewild", "James Frankie Thomas", 372, true);
-const book5 = new Book("What My Bones Know", "Stephanie Foo", 182, true);
-
-addBooktoLibrary(book1);
-addBooktoLibrary(book2);
-addBooktoLibrary(book3);
-addBooktoLibrary(book4);
-addBooktoLibrary(book5);
-
-
 displayLibraryBooks();
 
