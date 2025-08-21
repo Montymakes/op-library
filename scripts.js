@@ -10,116 +10,198 @@ const pageCountInput = document.getElementById('pageCount');
 const finishedInput = document.getElementById('finished-1');
 const form = document.querySelector('form');
 
-
-//Library Variables and Functions
-let myLibrary = [];
-
-function Book(title, author, pages, read) {
-    if (!new.target) {
-        throw Error("Use 'new' to call the Book constructor function.")
-    }
-
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.id = crypto.randomUUID();
-    this.info = function() {
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'finished' : 'not finished'}.`;
+class Library {
+    #library;
+    
+    constructor(library = []){
+        this.#library = library;
     };
-};
 
-function addBooktoLibrary(book) {
-    myLibrary.push(book);
-};
-
-//Library Display Functions
-function displayLibraryBooks() {
-    libraryDisplay.innerHTML = ''; //clear display
-
-    for (const book of myLibrary) {
-       let bookCard = 
-       `<div class="bookCard" id="${book.id}">
-            <div class="book-details">
-                <h2 class="title">${book.title}</h2>
-                <p>by ${book.author}</p>
-                <p><span class=bold>Pages:</span> ${book.pages}</p>
-            </div>
-            <div class="book-controls">
-                <button type="button" class="${book.read ? "read" : ""} readingStatusButton">${book.read ? "READ" : "UNREAD"}</button>
-                <input type="image" src="img/delete.svg" class="delete" alt="Remove this book from your library." />
-            </div>
-       </div>`;
-
-       libraryDisplay.innerHTML += bookCard;
+    get myLibrary(){
+        return this.#library;
     }
 
-    libraryDisplay.appendChild(addBookButton); //re-add button
+    set myLibrary(value) {
+        this.#library = value;
+    }
 
-};
+    add(book) {
+        this.#library.push(book);
+    }
 
-function removeBookfromLibrary(bookID) {
-    const newLibrary = myLibrary.filter((book) => book.id != bookID);
-    myLibrary = newLibrary;
-};
+    get(bookID) {
+        return this.#library.filter((book) => book.id === bookID);
+    }
 
-function deleteBook(bookID) {
-    removeBookfromLibrary(bookID);
-    displayLibraryBooks();
-};
+    remove(bookID) {
+        const newLibrary = this.#library.filter((book) => book.id != bookID);
+        this.#library = newLibrary;
+    }
+}
+class Book {
+    id = crypto.randomUUID();
+    #title;
+    #author;
+    #pages;
+    #read;
+    
+    constructor(title,author,pages,read){
+        this.#title = title;
+        this.#author = author;
+        this.#pages = pages;
+        this.#read = read;
+    }
 
-function toggleReadingStatus(bookID) {
-    const book = myLibrary.find((book) => book.id === bookID);
-    book.read = book.read ? false : true;
-    displayLibraryBooks();
-};
+    //Getters
+    get title(){
+        return this.#title;
+    }
 
-libraryDisplay.addEventListener("click", (e) => {
-    if(!(e.target.closest(".delete"))) return;
-    deleteBook(e.target.parentElement.parentElement.id);
-});
+    get author(){
+        return this.#author;
+    }
 
-libraryDisplay.addEventListener("click", (e) => {
-    if(!(e.target.closest(".readingStatusButton"))) return;
-    e.target.classList.toggle('read');
-    toggleReadingStatus(e.target.parentElement.parentElement.id);
-});
+    get pages(){
+        return this.#pages;
+    }
 
-// Dialog Controls
-function clearInputs()  {
-    titleInput.value = '';
-    authorInput.value = '';
-    pageCountInput.value = '';
-};
+    get read(){
+        return this.#read;
+    }
 
-libraryDisplay.addEventListener("click", (e) => {
-    if(!(e.target.closest("#addBook"))) return;
-    dialog.showModal();
-});
+    get info(){
+        return `${this.title} by ${this.author}, ${this.pages} pages, ${read ? 'finished' : 'not finished'}.`;
+    }
 
-exitButton.addEventListener("click", () => {
-    clearInputs();
-    dialog.close();
-});
+    //Setters
+    set title(value){
+        this.#title = value;
+    }
+
+    set author(value){
+        this.#author = value;
+    }
+
+    set pages(value){
+        this.#pages = value;
+    }
+
+    set read(value) {
+        this.#read = value;
+    }
+}
+
+class LibraryDisplay {
+    #library;
+
+    constructor(library = new Library){
+        this.#library = library;
+    }
+    
+    //Getters
+    get myLibrary(){
+        return this.#library;
+    }
+
+    //Setters
+    set myLibrary(library){
+        this.#library = library;
+     }
+
+    //Methods
+    clear(){
+        libraryDisplay.innerHTML = '';
+    }
+
+    display(){
+
+        exitButton.addEventListener("click", () => {
+            display.clearInput();
+            dialog.close();
+        });
+
+        submitButton.addEventListener('click', this.submitNewBook);
+
+        this.clear();
+
+        for (const book of this.#library.myLibrary) {
+            let bookCard = 
+            `<div class="bookCard" id="${book.id}">
+                    <div class="book-details">
+                        <h2 class="title">${book.title}</h2>
+                        <p>by ${book.author}</p>
+                        <p><span class=bold>Pages:</span> ${book.pages}</p>
+                    </div>
+                    <div class="book-controls">
+                        <button type="button" class="${book.read ? "read " : ""}readingStatusButton">${book.read ? "READ" : "UNREAD"}</button>
+                        <input type="image" src="img/delete.svg" class="delete" alt="Remove this book from your library." />
+                    </div>
+            </div>`;
+
+            libraryDisplay.innerHTML += bookCard;
+        }
+
+        const readButtons = document.getElementsByClassName('readingStatusButton');
+        for (let button of readButtons) {
+            button.addEventListener('click', (e) => {
+                e.target.classList.toggle('read');
+                display.toggleBookProgress(e.target.parentElement.parentElement.id);
+            });
+        }
+
+        const deleteButtons = document.getElementsByClassName('delete');
+        for (let button of deleteButtons) {
+            button.addEventListener('click', (e) => {
+                display.remove(e.target.parentElement.parentElement.id);
+            })
+        }
+        
+        libraryDisplay.appendChild(addBookButton);
+
+        addBookButton.addEventListener("click", (e) => {
+            if(!(e.target.closest("#addBook"))) return;
+            dialog.showModal();
+        });
+
+    }
+
+    toggleBookProgress(bookID){
+        const book = library.myLibrary.find((book) => book.id === bookID);
+        book.read = book.read ? false : true;
+        this.display();
+    }
+    
+    remove(bookID) {
+        library.remove(bookID);
+        this.display();
+    }
+
+    clearInput() {
+        titleInput.value = '';
+        authorInput.value = '';
+        pageCountInput.value = '';
+    }
+
+    submitNewBook(e){
+        e.preventDefault();
+
+        const title = titleInput.value;
+        const author = authorInput.value;
+        const pages = pageCountInput.value;
+        const read = finishedInput.checked;
+        const newBook = new Book(title, author, pages, read);
+        library.add(newBook);
+        display.display();
+
+        display.clearInput();
+        dialog.close();
+    }
+}
+
+let library = new Library();
+let display = new LibraryDisplay(library);
+display.display();
 
 
-function submitNewBook(e) {
-    e.preventDefault();
 
-    const title = titleInput.value;
-    const author = authorInput.value;
-    const pages = pageCountInput.value;
-    const read = finishedInput.checked;
-
-    addBooktoLibrary(new Book(title, author, pages, read));
-    displayLibraryBooks();
-
-    clearInputs();
-    dialog.close();
-
-};
-
-submitButton.addEventListener('click', submitNewBook);
-
-displayLibraryBooks();
 
